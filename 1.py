@@ -12,9 +12,7 @@ def move_dial(current_position, movement):
     else:
         index = (current_position + amount) % 100
 
-    print(index)
     final_position = DIAL[index]
-    print(final_position)
 
     return final_position
 
