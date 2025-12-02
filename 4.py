@@ -29,26 +29,24 @@ def pattern_generate(start, end, palindromes_only = False):
 
     num_digits = len(start)
     if palindromes_only: #let a user recover only specific patterns (palindromes)
-        if num_digits % 2 == 0:
-            factors = [int(num_digits/2)]
-        else:
-            return patterns 
+        factors = [int(num_digits/2)] if num_digits % 2 == 0 else [] 
+
     else: #discover all
         factors = [i for i in range(1, num_digits+1) if num_digits % i == 0 and i < num_digits]
 
     for factor in factors:
         #find repeated patterns
 
-            first_chunk_floor = start[:factor]
-            first_chunk_ceiling = end[:factor]
+        first_chunk_floor = start[:factor]
+        first_chunk_ceiling = end[:factor]
 
-            #generate all possible palindromes based on possible first chunks
-            possible_pats = [ str(chunk)*(int(num_digits/factor)) for chunk in range(int(first_chunk_floor), int(first_chunk_ceiling)+1)]
+        #generate all possible palindromes based on possible first chunks
+        possible_pats = [ str(chunk)*(int(num_digits/factor)) for chunk in range(int(first_chunk_floor), int(first_chunk_ceiling)+1)]
 
-            #only keep the possible palindromes that fit witnin the given range
-            reasonable_pats = list(filter(lambda x: int(x)>=int(start) and int(x)<=int(end), possible_pats))
+        #only keep the possible palindromes that fit witnin the given range
+        reasonable_pats = list(filter(lambda x: int(x)>=int(start) and int(x)<=int(end), possible_pats))
 
-            patterns.extend(reasonable_pats)
+        patterns.extend(reasonable_pats)
 
     return patterns
 
