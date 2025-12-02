@@ -48,7 +48,8 @@ def pattern_generate(start, end, palindromes_only = False):
 
         patterns.extend(reasonable_pats)
 
-    return patterns
+    #some patterns can be generated via distinct chunks => dedupe the list!
+    return list(set(patterns))
 
 def pattern_finder(start, end, palindromes=False):
 
@@ -76,7 +77,4 @@ if __name__ == "__main__":
     for block in parsed_ranges:
         global_patterns.extend(pattern_finder(block["start"], block["end"], palindromes=False))
 
-    #apprently there are duplicates in these ranges now! Overlapping!
-    deduped = set(global_patterns)
-
-    print("grand total", sum([int(x) for x in deduped]))
+    print("grand total", sum([int(x) for x in global_patterns]))
