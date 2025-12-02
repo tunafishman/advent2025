@@ -26,8 +26,8 @@ def subranges(start, end):
 def pattern_generate(start, end, palindromes_only = False):
     
     patterns = []
-
     num_digits = len(start)
+
     if palindromes_only: #let a user recover only specific patterns (palindromes)
         factors = [int(num_digits/2)] if num_digits % 2 == 0 else [] 
 
@@ -40,10 +40,10 @@ def pattern_generate(start, end, palindromes_only = False):
         first_chunk_floor = start[:factor]
         first_chunk_ceiling = end[:factor]
 
-        #generate all possible palindromes based on possible first chunks
+        #generate all possible patterns based on possible first chunks
         possible_pats = [ str(chunk)*(int(num_digits/factor)) for chunk in range(int(first_chunk_floor), int(first_chunk_ceiling)+1)]
 
-        #only keep the possible palindromes that fit witnin the given range
+        #only keep the possible patterns that fit within the given range
         reasonable_pats = list(filter(lambda x: int(x)>=int(start) and int(x)<=int(end), possible_pats))
 
         patterns.extend(reasonable_pats)
@@ -56,7 +56,9 @@ def pattern_finder(start, end, palindromes=False):
 
     #divide range into subrange blocks to assure constant number of digits in integer   
     for block in subranges(start, end):
-        pats.extend(pattern_generate(block[0], block[1], [] if not palindromes else [2]))
+
+        #generate patterns within each subrange
+        pats.extend(pattern_generate(block[0], block[1], palindromes))
 
     return pats
 
