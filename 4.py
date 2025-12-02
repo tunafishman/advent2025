@@ -1,7 +1,3 @@
-#within given ranges, find "product IDs" that appear as tidy palindromes
-
-# IDs must first be an even number of digits
-
 def subranges(start, end):
     
     #divide initial ranges into subranges based on number of digits
