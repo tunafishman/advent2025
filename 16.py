@@ -14,6 +14,20 @@ def next_min(connections_matrix):
                 
     return i, j
 
+def next_mins_easy(connections_matrix, limit=0):
+
+    distances = []
+    for i, row in enumerate(connections_matrix):
+        for j, entry in enumerate(row):
+            distances.append((i, i+1+j, entry))
+
+    distances.sort(key=lambda item: item[2])
+
+    if limit:
+        return distances[:limit]
+    else:
+        return distances
+
 def circuit_coalesce(circuits, new_circ=set()):
 
     if len(new_circ) != 0:
@@ -71,25 +85,31 @@ if __name__ == "__main__":
 
     circuits=[{x} for x in range(len(jxns))]
     print(len(circuits))
-    #connections = 0
+    connection_num = 0
     #max_connections = 1000
 
+    distances = next_mins_easy(everything)
+    
     while len(circuits) > 1: 
-        c1, c2 = next_min(everything)
+
+        #c1, c2 = next_min(everything)
+        connection = distances[connection_num]
+        c1, c2 = connection[0], connection[1]
+        new_node_set = {c1, c2}
 
         #this thing is tricky.
         #upper triangular, zero indexed matrix means that index j of the list in row i
         #is actually the i+j+1 node in the original input list. Ugh.
-        new_node_set = {c1, (c1+1)+c2}
+        #new_node_set = {c1, (c1+1)+c2}
 
         #check whether these two nodes are already connected in a circuit
         if not is_sub_circuit(circuits, new_node_set):
-            circuits = circuit_coalesce(circuits, {c1, (c1+1)+c2})
+            circuits = circuit_coalesce(circuits, new_node_set)
         
         #mark this connection between junctions as handled
-        everything[c1][c2] = -1
+        #everything[c1][c2] = -1
 
-        # connections+=1 
+        connection_num+=1 
 
-    print(int(jxns[c1][0]) * int(jxns[c1+1+c2][0]))
+    print(int(jxns[c1][0]) * int(jxns[c2][0]))
 
